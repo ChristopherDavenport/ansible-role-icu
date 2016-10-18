@@ -1,0 +1,4 @@
+---
+
+icu_base: /usr/local/include
+icu_home: "{{ icu_base }}/icu"
