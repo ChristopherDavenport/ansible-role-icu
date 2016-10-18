@@ -1,11 +1,7 @@
 ---
 
 - name: Unarchive ICU
-  unarchive:
-    remote_src: yes
-    src: "http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz"
-    dest: "{{ icu_base }}"
-    creates: "{{ icu_home }}"
+  unarchive: src=http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz dest={{ icu_base }} remote_src=yes
 
 - name: Set ICU_HOME if configured.
   template:
