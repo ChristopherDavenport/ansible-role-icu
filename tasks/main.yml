@@ -90,7 +90,7 @@
 
 - name: Gmake Install
   command: >
-      chdir={{icu_source}}
+      chdir={{ icu_base }}/icu/source
       /usr/bin/gmake install
   register: installResult
   ignore_errors: yes
