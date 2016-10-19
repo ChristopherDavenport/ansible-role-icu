@@ -10,12 +10,14 @@
     url: "{{ icu_url }}"
     dest: "{{ icu_base }}"
     checksum: "{{ icu_checksum }}"
+    timeout: 30
   when: icu_checksum is defined
 
 - name: Download ICU without Checksum
   get_url:
     url: "{{ icu_url }}"
     dest: "{{ icu_base }}"
+    timeout: 30
   when: icu_checksum is not defined
 
 - name: Unarchive ICU
@@ -34,32 +36,32 @@
   command: >
       chdir={{ icu_base }}/icu/source
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
-  when: icu_config_version == icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected
 
 - name: Gmake Clean
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake clean
-  when: icu_config_version == icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected
 
 - name: Gmake To Make
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake
-  when: icu_config_version == icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected
 
 - name: Gmake Check
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake check
   ignore_errors: yes
-  when: icu_config_version == icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected
 
 - name: Gmake Install
   command: >
       chdir={{icu_source}}
       /usr/bin/gmake install
-  when: icu_config_version == icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected
 
 - name: Set ICU_HOME if configured.
   template:
