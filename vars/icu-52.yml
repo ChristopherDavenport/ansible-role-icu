@@ -1,6 +1,8 @@
 ---
 
-icu_base_url: http://download.icu-project.org/files/icu4c/52.1
-icu_archive_file: icu4c-52_1-src.tgz
+icu_base_url: "http://download.icu-project.org/files/icu4c/52.1"
+icu_archive_file: "icu4c-52_1-src.tgz"
 icu_url: "{{ icu_base_url }}/{{ icu_archive_file }}"
 icu_checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
+
+icu_config_version_expected: 52.1
