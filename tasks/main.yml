@@ -21,4 +21,4 @@
     src: icu_home.sh.j2
     dest: /etc/profile.d/icu_home.sh
     mode: 0644
-  when: icu_home
+  when: icu_home is defined
