@@ -2,20 +2,20 @@
 
 icu_version:
 
-icu_versions:
-  - version: 58
-    base_url: http://download.icu-project.org/files/icu4c/58rc
-    archive_file: icu4c-58rc-src.tgz
-    # url: "{{ base_url }}/{{ archive_file }}"
-    checksum: md5:dec00acb2f01a5d4db831294f6eadc80
-  - version: 52
-    base_url: http://download.icu-project.org/files/icu4c/52.1
-    archive_file: icu4c-52_1-src.tgz
-    # url: "{{ base_url }}/{{ archive_file }}"
-    checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
-  - version: 3
-    base_url: ftp://ftp.software.ibm.com/software/globalization/icu/3.6
-    archive_file: icu4c-3_6-src.tgz
+# icu_versions:
+#   - version: 58
+#     base_url: http://download.icu-project.org/files/icu4c/58rc
+#     archive_file: icu4c-58rc-src.tgz
+#     # url: "{{ base_url }}/{{ archive_file }}"
+#     checksum: md5:dec00acb2f01a5d4db831294f6eadc80
+  # - version: 52
+  #   base_url: http://download.icu-project.org/files/icu4c/52.1
+  #   archive_file: icu4c-52_1-src.tgz
+  #   # url: "{{ base_url }}/{{ archive_file }}"
+  #   checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
+  # - version: 3
+  #   base_url: ftp://ftp.software.ibm.com/software/globalization/icu/3.6
+  #   archive_file: icu4c-3_6-src.tgz
 
 icu_base: /usr/local/include
 icu_home: "{{ icu_base }}/icu"

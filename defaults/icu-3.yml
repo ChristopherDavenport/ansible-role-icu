@@ -1,0 +1,5 @@
+---
+
+icu_base_url: ftp://ftp.software.ibm.com/software/globalization/icu/3.6
+icu_archive_file: icu4c-3_6-src.tgz
+icu_url: "{{ icu_base_url }}/{{ icu_archive_file }}"

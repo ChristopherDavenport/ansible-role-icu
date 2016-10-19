@@ -1,25 +1,21 @@
 ---
-- name: Establish Version
-  set_fact:
-    version: "{{ icu_version }}"
 
-- debug: msg="Version set to {{ version }}"
+- debug: msg="Version set to {{ icu_version }}"
+
+- name: Include version-specific variables for RedHat.
+  include_vars: "icu-{{ icu_version }}.yml"
 
 - name: Download ICU
   get_url:
-    url: "{{ item.base_url }}/{{ item.archive_file }}"
+    url: "{{ icu_url }}"
     dest: "{{ icu_base }}"
-    checksum: "{{ item.checksum | default({}) }}"
-  when: item.version == version
-  with_items: "{{ icu_versions }}"
+    checksum: "{{ icu_checksum | default({}) }}"
 
 - name: Unarchive ICU
   unarchive:
-    src: "{{ icu_base }}/{{ item.archive_file }}"
+    src: "{{ icu_base }}/{{ icu_archive_file }}"
     dest: "{{ icu_base }}"
     remote_src: yes
-  when: item.version == version
-  with_items: "{{ icu_versions }}"
 
 - name: Set ICU_HOME if configured.
   template:
