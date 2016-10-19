@@ -72,7 +72,7 @@
       chdir={{ icu_base }}/icu/source
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
   register: configureResult
-  when: icu_config_version != icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected.stdout
   ignore_errors: True
 
 - debug: var=configureResult
@@ -82,7 +82,7 @@
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake clean
   register: cleanResult
-  when: icu_config_version != icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected.stdout
   ignore_errors: True
 
 - debug: var=cleanResult
@@ -92,7 +92,7 @@
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake
   register: makeResult
-  when: icu_config_version != icu_config_version_expected
+  when: icu_config_version != icu_config_version_expected.stdout
   ignore_errors: True
 
 - debug: var=makeResult
@@ -102,8 +102,8 @@
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake check
   register: checkResult
+  when: icu_config_version != icu_config_version_expected.stdout
   ignore_errors: yes
-  when: icu_config_version != icu_config_version_expected
 
 - debug: var=checkResult
 
@@ -112,8 +112,8 @@
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake install
   register: installResult
+  when: icu_config_version != icu_config_version_expected.stdout
   ignore_errors: yes
-  when: icu_config_version != icu_config_version_expected
 
 - debug: var=installResult
 
