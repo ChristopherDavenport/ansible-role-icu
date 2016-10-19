@@ -1,4 +1,6 @@
 ---
 - hosts: all
+  vars:
+    icu_version: 52
   roles:
     - role_under_test
