@@ -8,7 +8,6 @@
     state: installed
   with_items:
     - gcc
-    - cc
     - gmake
 
 - name: Include version-specific variables for ICU.
@@ -54,6 +53,7 @@
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
   register: configureResult
   when: icu_config_version != icu_config_version_expected
+  ignore_errors: True
 
 - debug: var=configureResult
 
@@ -61,26 +61,41 @@
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake clean
+  register: cleanResult
   when: icu_config_version != icu_config_version_expected
+  ignore_errors: True
+
+- debug: var=cleanResult
 
 - name: Gmake To Make
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake
+  register: makeResult
   when: icu_config_version != icu_config_version_expected
+  ignore_errors: True
+
+- debug: var=makeResult
 
 - name: Gmake Check
   command: >
       chdir={{ icu_base }}/icu/source
       /usr/bin/gmake check
+  register: checkResult
   ignore_errors: yes
   when: icu_config_version != icu_config_version_expected
+
+- debug: var=checkResult
 
 - name: Gmake Install
   command: >
       chdir={{icu_source}}
       /usr/bin/gmake install
+  register: installResult
+  ignore_errors: yes
   when: icu_config_version != icu_config_version_expected
+
+- debug: var=installResult
 
 - name: Set ICU_HOME if configured.
   template:
