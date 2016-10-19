@@ -1,7 +1,18 @@
 ---
 
+- name: Download ICU
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ icu_base }}"
+    checksum: "{{ item.checksum }}"
+  when: item.version == icu_version
+  with_items: "{{ icu_versions }}"
+
 - name: Unarchive ICU
-  unarchive: src=http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz dest={{ icu_base }} remote_src=yes
+  unarchive:
+    src: "{{ icu_base }}/icu4c-52_1-src.tgz"
+    dest: "{{ icu_base }}"
+    remote_src: yes
 
 - name: Set ICU_HOME if configured.
   template:

@@ -1,4 +1,14 @@
 ---
 
+icu_version:
+
+icu_versions:
+  - version: 58
+    url: http://download.icu-project.org/files/icu4c/58rc/icu4c-58rc-src.tgz
+    checksum: md5:dec00acb2f01a5d4db831294f6eadc80
+  - version: 52
+    url: http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz
+    checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
+
 icu_base: /usr/local/include
 icu_home: "{{ icu_base }}/icu"
