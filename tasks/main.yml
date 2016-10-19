@@ -1,11 +1,14 @@
 ---
+- name: Establish Version
+  set_fact:
+    version: "{{ icu_version }}"
 
 - name: Download ICU
   get_url:
     url: "{{ item.base_url }}/{{ item.archive_file }}"
     dest: "{{ icu_base }}"
     checksum: "{{ item.checksum | default({}) }}"
-  when: item.version == icu_version
+  when: item.version == version
   with_items: "{{ icu_versions }}"
 
 - name: Unarchive ICU
@@ -13,7 +16,7 @@
     src: "{{ icu_base }}/{{ item.archive_file }}"
     dest: "{{ icu_base }}"
     remote_src: yes
-  when: item.version == icu_version
+  when: item.version == version
   with_items: "{{ icu_versions }}"
 
 - name: Set ICU_HOME if configured.

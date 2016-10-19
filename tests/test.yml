@@ -1,6 +1,4 @@
 ---
 - hosts: all
-  vars:
-    icu_version: "{{ lookup('env', 'icu_version') }}"
   roles:
     - role_under_test
