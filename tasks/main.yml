@@ -2,7 +2,7 @@
 
 - debug: msg="Version set to {{ icu_version }}"
 
-- name: Include version-specific variables for RedHat.
+- name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
 
 - name: Download ICU
