@@ -5,11 +5,18 @@
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
 
-- name: Download ICU
+- name: Download ICU with Checksum
   get_url:
     url: "{{ icu_url }}"
     dest: "{{ icu_base }}"
-    checksum: "{{ icu_checksum | default({}) }}"
+    checksum: "{{ icu_checksum }}"
+  when: icu_checksum is defined
+
+- name: Download ICU without Checksum
+  get_url:
+    url: "{{ icu_url }}"
+    dest: "{{ icu_base }}"
+  when: icu_checksum is not defined
 
 - name: Unarchive ICU
   unarchive:
