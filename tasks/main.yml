@@ -47,8 +47,6 @@
     wget {{ icu_url }}
   when: icu_checksum is not defined and not icu_archive_stat.stat.exists
 
-- name: Download ICU without Checksum
-
 - name: Unarchive ICU
   unarchive:
     src: "{{ icu_base }}/{{ icu_archive_file }}"
@@ -62,7 +60,7 @@
   ignore_errors: True
 
 - name: Current Icu Version Is
-  debug: var=icu_config_version
+  debug: var=icu_config_version.stdout
 
 - name: Expecte Icu Version Is
   debug: var=icu_config_version_expected
