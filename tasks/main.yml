@@ -8,7 +8,7 @@
     state: installed
   with_items:
     - gcc
-    - g++
+    - gcc-c++
     - make
 
 - name: Include version-specific variables for ICU.
