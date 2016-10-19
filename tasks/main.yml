@@ -25,16 +25,29 @@
   retries: 5
   when: icu_checksum is defined
 
-- name: Download ICU without Checksum
-  get_url:
-    url: "{{ icu_url }}"
-    dest: "{{ icu_base }}"
-    timeout: 30
-    force_basic_auth: yes
-  register: get_url_result
-  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
-  retries: 5
+# - name: Download ICU without Checksum
+#   get_url:
+#     url: "{{ icu_url }}"
+#     dest: "{{ icu_base }}"
+#     timeout: 30
+#     force_basic_auth: yes
+#   register: get_url_result
+#   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+#   retries: 5
+#   when: icu_checksum is not defined
+- name: Check if file exists without checksum
+  stat:
+    path: "{{ icu_base }}/{{ icu_archive_file }}"
+  register: icu_archive_stat
   when: icu_checksum is not defined
+
+- name: Download ICU without checksum
+  command: >
+    chdir={{ icu_base }}
+    wget {{ icu_url }}
+  when: icu_checksum is not defined and not icu_archive_stat.stat.exists
+
+- name: Download ICU without Checksum
 
 - name: Unarchive ICU
   unarchive:
