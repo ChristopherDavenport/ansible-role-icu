@@ -6,12 +6,12 @@ icu_versions:
   - version: 58
     base_url: http://download.icu-project.org/files/icu4c/58rc
     archive_file: icu4c-58rc-src.tgz
-    url: "{{ base_url }}/{{ archive_file }}"
+    # url: "{{ base_url }}/{{ archive_file }}"
     checksum: md5:dec00acb2f01a5d4db831294f6eadc80
   - version: 52
     base_url: http://download.icu-project.org/files/icu4c/52.1
     archive_file: icu4c-52_1-src.tgz
-    url: "{{ base_url }}/{{ archive_file }}"
+    # url: "{{ base_url }}/{{ archive_file }}"
     checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
 
 icu_base: /usr/local/include

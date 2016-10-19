@@ -2,7 +2,7 @@
 
 - name: Download ICU
   get_url:
-    url: "{{ item.url }}"
+    url: "{{ item.base_url }}/{{ item.archive_file }}"
     dest: "{{ icu_base }}"
     checksum: "{{ item.checksum }}"
   when: item.version == icu_version
