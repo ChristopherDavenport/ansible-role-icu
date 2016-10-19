@@ -2,6 +2,15 @@
 
 - debug: msg="Version set to {{ icu_version }}"
 
+- name: Make Sure All Required Packages Are Present
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - gcc
+    - cc
+    - gmake
+
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
 
@@ -11,6 +20,9 @@
     dest: "{{ icu_base }}"
     checksum: "{{ icu_checksum }}"
     timeout: 30
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 5
   when: icu_checksum is defined
 
 - name: Download ICU without Checksum
@@ -18,6 +30,10 @@
     url: "{{ icu_url }}"
     dest: "{{ icu_base }}"
     timeout: 30
+    force_basic_auth: yes
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 5
   when: icu_checksum is not defined
 
 - name: Unarchive ICU
@@ -36,7 +52,10 @@
   command: >
       chdir={{ icu_base }}/icu/source
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
+  register: configureResult
   when: icu_config_version != icu_config_version_expected
+
+- debug: var=configureResult
 
 - name: Gmake Clean
   command: >
