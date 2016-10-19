@@ -3,6 +3,8 @@
   set_fact:
     version: "{{ icu_version }}"
 
+- debug: msg="Version set to {{ version }}"
+
 - name: Download ICU
   get_url:
     url: "{{ item.base_url }}/{{ item.archive_file }}"
