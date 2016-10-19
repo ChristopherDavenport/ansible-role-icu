@@ -1,7 +1,4 @@
 ---
 - hosts: all
   roles:
-    - set_fact:
-        icu_version: "{{ [3, 52, 58] | random }}""
-    - debug: var=icu_version
     - role_under_test
