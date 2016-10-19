@@ -32,19 +32,19 @@ before_install:
 
 script:
   - container_id=$(mktemp)
-  - icu_v=${icu_version}
+  - echo "${icu_version}"
   # Run container in detached state.
   - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
 
   # Ansible syntax check.
-  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=$(cat ${icu_v})" --syntax-check '
+  - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${icu_version}" --syntax-check '
 
   # Test role.
-  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=$(cat ${icu_v})" '
+  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${icu_version}" '
 
   # Test role idempotence.
   - idempotence=$(mktemp)
-  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=$(cat ${icu_v})" | tee -a ${idempotence}
+  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml ---extra-vars "icu_version=${icu_version}" | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
