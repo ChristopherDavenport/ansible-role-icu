@@ -48,6 +48,12 @@
   register: icu_config_version
   ignore_errors: True
 
+- name: Current Icu Version Is
+  debug: var=icu_config_version
+
+- name: Expecte Icu Version Is
+  debug: var=icu_config_version_expected
+
 - name: Run Configure ICU
   command: >
       chdir={{ icu_base }}/icu/source
