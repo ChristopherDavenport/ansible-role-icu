@@ -1,7 +1,7 @@
 ---
 
 - name: Make Sure All Required Packages Are Present
-  yum:
+  package:
     name: "{{ item }}"
     state: installed
   with_items:
