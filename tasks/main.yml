@@ -57,17 +57,9 @@
     keep_newer: yes
 
 - name: Check Current ICU Version With Checksum
-  command: /usr/local/bin/icu-config --version
+  command: "{{ icu_version_command }}"
   register: icu_config_version
   changed_when: False
-  when: icu_checksum is defined
-  ignore_errors: True
-
-- name: Check Current ICU Version Without Checksum
-  command: /usr/local/include/icu/source/config/test-icu-config.sh --version
-  register: icu_config_version
-  changed_when: False
-  when: icu_checksum is not defined
   ignore_errors: True
 
 # - name: Update DB
