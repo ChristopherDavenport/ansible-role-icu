@@ -1,7 +1,6 @@
 ---
 
 - include: setup-{{ ansible_os_family }}.yml
-  static: no
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
