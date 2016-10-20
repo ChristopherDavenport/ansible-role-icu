@@ -3,7 +3,7 @@
 - name: Fix messagepattern.cpp
   blockinfile:
     dest: "{{ icu_base }}/icu/source/common/messagepattern.cpp"
-    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    # marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
     insertafter: '^        int32_t.typeIndex=index=skipWhiteSpace\(index\+1\);\n        while\(index<msg.length\(\) && isArgTypeChar\(msg.charAt\(index\)\)\) {\n            \+\+index;\n        }'
     block: "if (msg.charAt(index)=='%' ) {
       while(index<msg.length() && msg.charAt(index)!=u_rightCurlyBrace) {
@@ -14,7 +14,7 @@
 - name: Fix fmtable.h
   blockinfile:
     dest: "{{ icu_base }}/icu/source/i18n/unicode/fmtable.h"
-    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    # marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
     insertafter: '^        kObject$'
     block: "        ,kAnsiPattern"
 
@@ -28,7 +28,7 @@
 - name: Fix msgfmt.h class
   blockinfile:
     dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
-    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    # marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
     insertafter: '^class U_I18N_API MessageFormat : public Format {$'
     block: |+
       "#ifndef _banmax
