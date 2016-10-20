@@ -11,6 +11,7 @@
     - gcc-c++
     - make
     - wget
+    - mlocate
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
@@ -58,6 +59,7 @@
 - name: Check Current ICU Version
   shell: /usr/local/bin/icu-config --version
   register: icu_config_version
+  changed_when: False
   ignore_errors: True
 
 - name: Locate icu-config
