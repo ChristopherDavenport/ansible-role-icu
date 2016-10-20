@@ -2,15 +2,11 @@
 
 - debug: msg="Version set to {{ icu_version }}" verbosity=2
 
-- name: Make Sure All Required Packages Are Present
-  yum:
-    name: "{{ item }}"
-    state: installed
-  with_items:
-    - gcc
-    - gcc-c++
-    - make
-    - wget
+- include: setup-RedHat.yml
+  when: ansible_os_family == "RedHat"
+
+- include: setup-Debian.yml
+  when: ansible_os_family == "Debian"
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"

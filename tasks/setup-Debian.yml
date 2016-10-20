@@ -1,0 +1,14 @@
+---
+- name: Update apt cache.
+  apt:
+    update_cache: yes
+    cache_valid_time: 600
+
+- name: Make Sure All Required Packages Are Present
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - gcc
+    - g++
+    - make

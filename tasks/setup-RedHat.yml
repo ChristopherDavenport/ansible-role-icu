@@ -1,0 +1,10 @@
+---
+
+- name: Make Sure All Required Packages Are Present
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - gcc
+    - gcc-c++
+    - make

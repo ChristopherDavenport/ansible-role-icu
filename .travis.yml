@@ -17,10 +17,10 @@ env:
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     icu_version: 52
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 3
+  # - distro: centos7
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  #   icu_version: 3
   - distro: centos6
     init: /sbin/init
     run_opts: ""
@@ -37,10 +37,42 @@ env:
     init: /sbin/init
     run_opts: ""
     icu_version: 52
-  - distro: centos6
+  # - distro: centos6
+  #   init: /sbin/init
+  #   run_opts: ""
+  #   icu_version: 3
+  - distro: ubuntu1604
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 58
+  - distro: ubuntu1404
     init: /sbin/init
     run_opts: ""
-    icu_version: 3
+    icu_version: 58
+  - distro: ubuntu1204
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 58
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 58
+  - distro: ubuntu1604
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 52
+  - distro: ubuntu1404
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 52
+  - distro: ubuntu1204
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 52
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 52
 
 before_install:
   # Pull container.
