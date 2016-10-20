@@ -4,7 +4,7 @@
   blockinfile:
     dest: "{{ icu_base }}/icu/source/common/messagepattern.cpp"
     marker: "/* {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers */"
-    insertafter: '^        int32_t.typeIndex=index=skipWhiteSpace\(index\+1\);\n        while\(index<msg.length\(\) && isArgTypeChar\(msg.charAt\(index\)\)\) {\n            \+\+index;\n        }'
+    insertbefore: 'int32_t length\=index-typeIndex;'
     block: "if (msg.charAt(index)=='%' ) {\n      while(index<msg.length() && msg.charAt(index)!=u_rightCurlyBrace) {\n        index++;\n      }\n    }"
 
 - name: Fix fmtable.h
@@ -95,10 +95,4 @@
   replace:
     dest: "{{ icu_base }}/icu/source/i18n/msgfmt.cpp"
     regexp: '^            Format\* formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);$'
-    replace: "            Format* formatter = NULL;\n
-            if (explicitType[0] == '%' ) {\n
-                addAnsiPattern(argNumber,explicitType);\n
-                formattableType=Formattable::kAnsiPattern;\n
-            }\n
-            else\n
-                formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);\n"
+    replace: "            Format* formatter = NULL;\n            if (explicitType[0] == '%' ) {\n               addAnsiPattern(argNumber,explicitType);\n              formattableType=Formattable::kAnsiPattern;\n             }\n            else\n            formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);\n"

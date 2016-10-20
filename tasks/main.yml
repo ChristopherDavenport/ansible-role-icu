@@ -74,7 +74,6 @@
 - name: Make
   make:
     chdir: "{{ icu_base }}/icu/source"
-    target: clean
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Make Check
