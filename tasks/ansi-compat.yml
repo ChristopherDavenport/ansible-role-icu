@@ -26,13 +26,10 @@
     dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
     marker: "/* {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers */"
     insertafter: '^class U_I18N_API MessageFormat : public Format {$'
-    block: |+
-      "#ifndef _banmax\n
+    block: "#ifndef _banmax\n
       #define _banmax(a,b)  (((a) > (b)) ? (a) : (b))\n
       #endif\n
-\n
       public:\n
-\n
          class U_I18N_API AnsiPatterns {\n
              UnicodeString   **fCPattern; // store ansi type masks (%..).\n
              int fCPatternCapacity;\n
@@ -41,7 +38,6 @@
                  fCPatternCapacity=0;\n
                  fCPattern=NULL;\n
              }\n
-\n
              inline ~AnsiPatterns(){\n
                  if (fCPattern && fCPatternCapacity) {\n
                      for (int i=0; i<fCPatternCapacity;i++) {\n
@@ -59,7 +55,6 @@
                  if (fCPatternCapacity==0) {\n
                      fCPatternCapacity=_banmax(growInc,argnum+1);\n
                      fCPattern=(UnicodeString**) malloc( sizeof(fCPattern[0]) * fCPatternCapacity);\n
-\n
                      for (int i=0;fCPattern && i<fCPatternCapacity;i++)\n
                          fCPattern[i]=NULL;\n
                  }\n
@@ -71,7 +66,6 @@
                      fCPatternCapacity=newcap;\n
                  }\n
                  fCPattern[argnum]=new UnicodeString(pat);\n
-\n
                  //assume all strings in the argument list are UChar*\n
                  //change the Ansi pattern accordingly (for ustdio u_sprintf replacement)\n
                  switch (pat[pat.length()-1] ){\n
@@ -88,8 +82,6 @@
          };\n
       private:\n
          AnsiPatterns ansiPatterns;\n
-\n
-\n
       public:\n
          inline  UnicodeString* getAnsiPattern(const int32_t argnum) {\n
              return ansiPatterns.getAt(argnum);\n
