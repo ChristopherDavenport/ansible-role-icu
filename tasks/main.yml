@@ -1,14 +1,9 @@
 ---
 
-# - debug: msg="Version set to {{ icu_version }}" verbosity=2
+# - debug: msg="Version set to {{ icu_version }}" verbosity=2o
 
-- include: setup-RedHat.yml
+- include: setup-{{ ansible_os_family }}.yml
   static: no
-  when: ansible_os_family == "RedHat"
-
-- include: setup-Debian.yml
-  static: no
-  when: ansible_os_family == "Debian"
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
@@ -78,8 +73,12 @@
   make:
     chdir: "{{ icu_base }}/icu/source"
     target: check
+  register: icu_check_result
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: yes
+  ignore_errors: True
+
+- name: Debug of make check
+  debug: var=icu_check_result
 
 - name: Make Install
   make:
