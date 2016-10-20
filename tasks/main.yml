@@ -75,10 +75,10 @@
     target: check
   register: icu_check_result
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: True
+  # ignore_errors: True
 
-- name: Debug of make check
-  debug: var=icu_check_result
+# - name: Debug of make check
+#   debug: var=icu_check_result
 
 - name: Make Install
   make:
