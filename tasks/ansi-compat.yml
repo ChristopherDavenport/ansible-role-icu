@@ -1,0 +1,115 @@
+---
+
+- name: Fix messagepattern.cpp
+  blockinfile:
+    dest: "{{ icu_base }}/icu/source/common/messagepattern.cpp"
+    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    insertafter: '^        int32_t.typeIndex=index=skipWhiteSpace\(index\+1\);\n        while\(index<msg.length\(\) && isArgTypeChar\(msg.charAt\(index\)\)\) {\n            \+\+index;\n        }'
+    block: "if (msg.charAt(index)=='%' ) {
+      while(index<msg.length() && msg.charAt(index)!=u_rightCurlyBrace) {
+        index++;
+      }
+    }"
+
+- name: Fix fmtable.h
+  blockinfile:
+    dest: "{{ icu_base }}/icu/source/i18n/unicode/fmtable.h"
+    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    insertafter: '^        kObject$'
+    block: "        ,kAnsiPattern"
+
+- name: Fix msgfmt.h include statement
+  lineinfile:
+    dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
+    insertafter: '\#include "unicode/utypes.h"'
+    line: "#include <stdlib.h>"
+
+
+- name: Fix msgfmt.h class
+  blockinfile:
+    dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
+    marker: "// {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers"
+    insertafter: '^class U_I18N_API MessageFormat : public Format {$'
+    block: |+
+      "#ifndef _banmax
+      #define _banmax(a,b)  (((a) > (b)) ? (a) : (b))
+      #endif
+
+      public:
+
+         class U_I18N_API AnsiPatterns {
+             UnicodeString   **fCPattern; // store ansi type masks (%..).
+             int fCPatternCapacity;
+         public:
+             inline AnsiPatterns(){
+                 fCPatternCapacity=0;
+                 fCPattern=NULL;
+             }
+
+             inline ~AnsiPatterns(){
+                 if (fCPattern && fCPatternCapacity) {
+                     for (int i=0; i<fCPatternCapacity;i++) {
+                         if (fCPattern[i])
+                             delete fCPattern[i];
+                     }
+                     free(fCPattern);
+                 }
+             }
+             inline UnicodeString* getAt(const int32_t argnum) {
+                 return fCPattern[argnum];
+             }
+             inline void add(const int32_t argnum, UnicodeString pat) {
+                 const int growInc=10; //add 10 when increase is needed
+                 if (fCPatternCapacity==0) {
+                     fCPatternCapacity=_banmax(growInc,argnum+1);
+                     fCPattern=(UnicodeString**) malloc( sizeof(fCPattern[0]) * fCPatternCapacity);
+
+                     for (int i=0;fCPattern && i<fCPatternCapacity;i++)
+                         fCPattern[i]=NULL;
+                 }
+                 else if (fCPatternCapacity<argnum+1) {
+                     int newcap=argnum+growInc;
+                     fCPattern=(UnicodeString**) realloc( fCPattern,sizeof(fCPattern[0]) * newcap);
+                     for (int i=fCPatternCapacity;fCPattern && i<newcap;i++)
+                         fCPattern[i]=NULL;
+                     fCPatternCapacity=newcap;
+                 }
+                 fCPattern[argnum]=new UnicodeString(pat);
+
+                 //assume all strings in the argument list are UChar*
+                 //change the Ansi pattern accordingly (for ustdio u_sprintf replacement)
+                 switch (pat[pat.length()-1] ){
+                     case 's': //ICU 3.6 U - > S
+                         fCPattern[argnum]->replace(pat.length()-1,1,(UChar)'S');
+                         break;
+                     case 'c':
+                         fCPattern[argnum]->replace(pat.length()-1,1,(UChar)'C');
+                         break;
+                     default:
+                         break;
+                 }
+             }
+         };
+      private:
+         AnsiPatterns ansiPatterns;
+
+
+      public:
+         inline  UnicodeString* getAnsiPattern(const int32_t argnum) {
+             return ansiPatterns.getAt(argnum);
+         }
+         inline  void addAnsiPattern(const int32_t argnum, UnicodeString pat) {
+             ansiPatterns.add(argnum,pat);
+         }"
+
+
+- name: Fix msgfmt.cpp
+  replace:
+    regexp: '^            Format\* formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);$'
+    replace: "            Format* formatter = NULL;
+            if (explicitType[0] == '%' ) {
+                addAnsiPattern(argNumber,explicitType);
+                formattableType=Formattable::kAnsiPattern;
+            }
+            else
+                formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);"

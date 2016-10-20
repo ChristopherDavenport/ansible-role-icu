@@ -1,7 +1,5 @@
 ---
 
-- debug: var=icu_version
-
 - include: setup-{{ ansible_os_family }}.yml
   static: no
 
@@ -18,18 +16,6 @@
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
   when: icu_checksum is defined
-
-# - name: Check if file exists without checksum
-#   stat:
-#     path: "{{ icu_base }}/{{ icu_archive_file }}"
-#   register: icu_archive_stat
-#   when: icu_checksum is not defined
-
-# - name: Download ICU without checksum
-#   command: >
-#     chdir={{ icu_base }}
-#     wget {{ icu_url }}
-#   when: icu_checksum is not defined and not icu_archive_stat.stat.exists
 
 - name: Unarchive ICU
   unarchive:
@@ -57,11 +43,12 @@
     - icu_apply_date_fix is defined
     - icu_apply_date_fix
 
-# - name: Current Icu Version Is
-#   debug: var=icu_config_version.stdout verbosity=2
-#
-# - name: Expected Icu Version Is
-#   debug: var=icu_config_version_expected verbosity=2
+- name: Apply Fixes For ansi compatibility
+  include: ansi-compat.yml
+  when:
+    - icu_config_version.stdout != icu_config_version_expected
+    - ansi-compat is defined
+    - ansi-compat
 
 - name: Run Configure ICU
   command: >
@@ -95,45 +82,6 @@
     target: install
   register: icu_install_result
   when: icu_config_version.stdout != icu_config_version_expected
-
-# - debug: var=configureResult verbosity=2
-#
-# - name: Gmake Clean
-#   command: >
-#       chdir={{ icu_base }}/icu/source
-#       /usr/bin/gmake clean
-#   register: cleanResult
-#   when: icu_config_version.stdout != icu_config_version_expected
-#
-# - debug: var=cleanResult verbosity=2
-#
-# - name: Gmake To Make
-#   command: >
-#       chdir={{ icu_base }}/icu/source
-#       /usr/bin/gmake
-#   register: makeResult
-#   when: icu_config_version.stdout != icu_config_version_expected
-#
-# - debug: var=makeResult verbosity=2
-#
-# - name: Gmake Check
-#   command: >
-#       chdir={{ icu_base }}/icu/source
-#       /usr/bin/gmake check
-#   register: checkResult
-#   when: icu_config_version.stdout != icu_config_version_expected
-#   ignore_errors: yes
-#
-# - debug: var=checkResult verbosity=2
-#
-# - name: Gmake Install
-#   command: >
-#       chdir={{ icu_base }}/icu/source
-#       /usr/bin/gmake install
-#   register: installResult
-#   when: icu_config_version.stdout != icu_config_version_expected
-#
-# - debug: var=installResult verbosity=2
 
 - name: Set ICU_HOME if configured.
   template:
