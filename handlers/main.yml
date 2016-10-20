@@ -1,4 +1,4 @@
 ---
 
 - name: Recompile ICU
-  include: recompileICU.yml
+  set_fact: icu_recompile=True

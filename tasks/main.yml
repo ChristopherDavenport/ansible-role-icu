@@ -10,7 +10,6 @@
   shell: /usr/local/bin/icu-config --version
   register: icu_config_version
   changed_when: False
-  notify: Recompile ICU
   ignore_errors: True
 
 - name: Download ICU with Checksum
@@ -22,6 +21,7 @@
   register: get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
+  notify: Recompile ICU
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Unarchive ICU
@@ -35,7 +35,6 @@
   file:
     path: "{{ icu_base }}/{{ icu_archive_file }}"
     state: absent
-  when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Fix For Early Version Error parse2DigitYear - See Defaults For Why
   lineinfile:
@@ -53,18 +52,18 @@
 - name: Apply Fixes For ansi compatibility
   include: ansi-compatibility.yml
   static: no
-  when:
-    - icu_ansi_compatibility is defined
-    - icu_ansi_compatibility
+  when: icu_ansi_compatibility
 
-- name: Re/Compile If Necessary
+- name: Set Recompile Status
   meta: flush_handlers
+
+- name: Recompile if Necessary
+  include: recompileICU.yml
+  when: icu_recompile
 
 - name: Set ICU_HOME if configured.
   template:
     src: icu_home.sh.j2
     dest: /etc/profile.d/icu_home.sh
     mode: 0644
-  when:
-    - set_icu_home is defined
-    - set_icu_home
+  when: icu_set_home

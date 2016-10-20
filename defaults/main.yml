@@ -1,24 +1,14 @@
 ---
 
-icu_version:
-
-# icu_versions:
-#   - version: 58
-#     base_url: http://download.icu-project.org/files/icu4c/58rc
-#     archive_file: icu4c-58rc-src.tgz
-#     # url: "{{ base_url }}/{{ archive_file }}"
-#     checksum: md5:dec00acb2f01a5d4db831294f6eadc80
-  # - version: 52
-  #   base_url: http://download.icu-project.org/files/icu4c/52.1
-  #   archive_file: icu4c-52_1-src.tgz
-  #   # url: "{{ base_url }}/{{ archive_file }}"
-  #   checksum: md5:9e96ed4c1d99c0d14ac03c140f9f346c
-  # - version: 3
-  #   base_url: ftp://ftp.software.ibm.com/software/globalization/icu/3.6
-  #   archive_file: icu4c-3_6-src.tgz
+icu_version: 58
 
 icu_base: /usr/local/include
+icu_set_home: False
 icu_home: "{{ icu_base }}/icu"
+
+icu_ansi_compatibility: False
+
+icu_recompile: False
 
 # Referencing https://sourceforge.net/p/icu/mailman/message/32443311/
 # From file test/intltest/dtfmttst.cpp
@@ -32,16 +22,3 @@ icu_2DigitYearFix:
     line:  '    parse2DigitYear(fmt, "5/6/30", date(130, UCAL_JUNE, 5));'
   - regex: '^....parse2DigitYear\(fmt, \"4/6/34\", date\(34, UCAL_JUNE, 4\)\);'
     line:  '    parse2DigitYear(fmt, "4/6/50", date(50, UCAL_JUNE, 4));'
-
-# [
-# "| ***     FAILING TEST SUMMARY FOR:              intltest  ",
-# "         TestTwoDigitYear",
-# "      DateFormatTest",
-# "   format",
-# "| *** END FAILING TEST SUMMARY FOR:              intltest",
-# "---------------",
-# "ALL TESTS SUMMARY:",
-# "ok:  testdata iotest cintltst",
-# "===== ERRS:  intltest",
-# "make[1]: Leaving directory `/usr/local/include/icu/source/test'"
-# ]
