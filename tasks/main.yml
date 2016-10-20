@@ -11,7 +11,6 @@
     - gcc-c++
     - make
     - wget
-    - mlocate
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
@@ -57,7 +56,7 @@
     keep_newer: yes
 
 - name: Check Current ICU Version With Checksum
-  command: "{{ icu_version_command }}"
+  shell: "{{ icu_version_command }}"
   register: icu_config_version
   changed_when: False
   ignore_errors: True
