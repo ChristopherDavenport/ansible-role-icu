@@ -60,6 +60,14 @@
   register: icu_config_version
   ignore_errors: True
 
+- name: Locate icu-config
+  command: locate icu-config
+  register: locate_icu_config
+  ignore_errors: True
+
+- name: Icu Location If Exists
+  debug: var=locate_icu_config
+
 - name: Current Icu Version Is
   debug: var=icu_config_version.stdout
 
