@@ -21,22 +21,22 @@ env:
   #   init: /usr/lib/systemd/systemd
   #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
   #   icu_version: 3
-  # - distro: centos6
-  #   init: /sbin/init
-  #   run_opts: ""
-  #   icu_version: 58
-  # - distro: centos6
-  #   init: /sbin/init
-  #   run_opts: ""
-  #   icu_version: 57
-  # - distro: centos6
-  #   init: /sbin/init
-  #   run_opts: ""
-  #   icu_version: 56
-  # - distro: centos6
-  #   init: /sbin/init
-  #   run_opts: ""
-  #   icu_version: 52
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 58
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 57
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 56
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 52
   # - distro: centos6
   #   init: /sbin/init
   #   run_opts: ""
@@ -45,18 +45,50 @@ env:
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     icu_version: 58
+  - distro: ubuntu1604
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 57
+  - distro: ubuntu1604
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 56
   - distro: ubuntu1404
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 58
+  - distro: ubuntu1404
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 57
+  - distro: ubuntu1404
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 56
+  - distro: ubuntu1204
     init: /sbin/init
     run_opts: ""
     icu_version: 58
   - distro: ubuntu1204
     init: /sbin/init
     run_opts: ""
-    icu_version: 58
+    icu_version: 57
+  - distro: ubuntu1204
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 56
   - distro: debian8
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     icu_version: 58
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 57
+  - distro: debian8
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 56
   - distro: ubuntu1604
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
