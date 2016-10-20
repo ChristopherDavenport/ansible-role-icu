@@ -21,7 +21,7 @@
   register: get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
-  notify: Recompile ICU
+  notify: ICU Set Recompile
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Unarchive ICU
@@ -44,22 +44,14 @@
     state: present
     backrefs: yes
   with_items: "{{ icu_2DigitYearFix }}"
-  notify: Recompile ICU
+  notify: ICU Set Recompile
   when:
     - icu_apply_date_fix is defined
     - icu_apply_date_fix
 
 - name: Apply Fixes For ansi compatibility
   include: ansi-compatibility.yml
-  static: no
-  when: icu_ansi_compatibility
-
-- name: Set Recompile Status
-  meta: flush_handlers
-
-- name: Recompile if Necessary
-  include: recompileICU.yml
-  when: icu_recompile
+  # when: icu_ansi_compatibility
 
 - name: Set ICU_HOME if configured.
   template:
@@ -67,3 +59,6 @@
     dest: /etc/profile.d/icu_home.sh
     mode: 0644
   when: icu_set_home
+
+- name: Trigger Execution:
+  notify: ICU Recompile Check

@@ -1,32 +1,37 @@
 ---
 
+
 - name: Fix messagepattern.cpp
   blockinfile:
+    state: "{{ icu_ansi_compatibility | ternary('present', 'absent') }}"
     dest: "{{ icu_base }}/icu/source/common/messagepattern.cpp"
     marker: "/* {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers */"
     insertbefore: 'int32_t length\=index-typeIndex;'
     block: "        if (msg.charAt(index)=='%' ) {\n          while(index<msg.length() && msg.charAt(index)!=u_rightCurlyBrace) {\n            index++;\n          }\n        }"
-  notify: Recompile ICU
+  notify: ICU Set Recompile
 
 - name: Fix fmtable.h
   blockinfile:
+    state: "{{ icu_ansi_compatibility | ternary('present', 'absent') }}"
     dest: "{{ icu_base }}/icu/source/i18n/unicode/fmtable.h"
     marker: "/* {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers */"
     insertafter: '^        kObject$'
     block: "        ,kAnsiPattern"
-  notify: Recompile ICU
+  notify: ICU Set Recompile
 
 - name: Fix msgfmt.h include statement
   lineinfile:
+    state: "{{ icu_ansi_compatibility | ternary('present', 'absent') }}"
     dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
     insertafter: '\#include "unicode/utypes.h"'
     line: "#include <stdlib.h>"
-  notify: Recompile ICU
+  notify: ICU Set Recompile
 
 
 - name: Fix msgfmt.h class
-  notify: Recompile ICU
+  notify: ICU Set Recompile
   blockinfile:
+    state: "{{ icu_ansi_compatibility | ternary('present', 'absent') }}"
     dest: "{{ icu_base }}/icu/source/i18n/unicode/msgfmt.h"
     marker: "/* {mark} ANSIBLE MANAGED BLOCK - Extend ICU with Ansi type specifiers */"
     insertafter: '^class U_I18N_API MessageFormat : public Format {$'
@@ -92,9 +97,18 @@
          }\n"
 
 
-- name: Fix msgfmt.cpp
+- name: Add Fix for msgfmt.cpp
   replace:
     dest: "{{ icu_base }}/icu/source/i18n/msgfmt.cpp"
     regexp: '^            Format\* formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);$'
     replace: "            Format* formatter = NULL;\n            if (explicitType[0] == '%' ) {\n               addAnsiPattern(argNumber,explicitType);\n              formattableType=Formattable::kAnsiPattern;\n             }\n            else\n            formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);\n"
-  notify: Recompile ICU
+  notify: ICU Set Recompile
+  when: icu_ansi_compatibility
+
+- name: Remove Fix for msgfmt.cpp
+  replace:
+    dest: "{{ icu_base }}/icu/source/i18n/msgfmt.cpp"
+    regexp: '            Format\* formatter \= NULL;\n            if \(explicitType\[0\] \=\= '%' \) {\n               addAnsiPattern\(argNumber,explicitType\);\n              formattableType\=Formattable::kAnsiPattern;\n             }\n            else\n            formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);\n'
+    replace: "            Format* formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);\n"
+  notify: ICU Set Recompile
+  when: not icu_ansi_compatibility
