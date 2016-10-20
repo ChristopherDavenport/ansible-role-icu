@@ -1,6 +1,6 @@
 ---
 
-- debug: msg="Version set to {{ icu_version }}"
+- debug: msg="Version set to {{ icu_version }}" verbosity=2
 
 - name: Make Sure All Required Packages Are Present
   yum:
@@ -26,16 +26,6 @@
   retries: 5
   when: icu_checksum is defined
 
-# - name: Download ICU without Checksum
-#   get_url:
-#     url: "{{ icu_url }}"
-#     dest: "{{ icu_base }}"
-#     timeout: 30
-#     force_basic_auth: yes
-#   register: get_url_result
-#   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
-#   retries: 5
-#   when: icu_checksum is not defined
 - name: Check if file exists without checksum
   stat:
     path: "{{ icu_base }}/{{ icu_archive_file }}"
@@ -61,26 +51,11 @@
   changed_when: False
   ignore_errors: True
 
-# - name: Update DB
-#   command: /usr/bin/updatedb
-#   when: icu_checksum is not defined
-#   ignore_errors: True
-#
-# - name: Locate icu-config
-#   command: locate icu-config
-#   register: locate_icu_config
-#   when: icu_checksum is not defined
-#   ignore_errors: True
-#
-# - name: Icu Location If Exists
-#   debug: var=locate_icu_config
-#   when: icu_checksum is not defined
-
 - name: Current Icu Version Is
-  debug: var=icu_config_version
+  debug: var=icu_config_version.stdout verbosity=2
 
 - name: Expected Icu Version Is
-  debug: var=icu_config_version_expected
+  debug: var=icu_config_version_expected verbosity=2
 
 - name: Run Configure ICU
   command: >
@@ -88,9 +63,8 @@
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
   register: configureResult
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: True
 
-# - debug: var=configureResult
+- debug: var=configureResult verbosity=2
 
 - name: Gmake Clean
   command: >
@@ -98,9 +72,8 @@
       /usr/bin/gmake clean
   register: cleanResult
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: True
 
-# - debug: var=cleanResult
+- debug: var=cleanResult verbosity=2
 
 - name: Gmake To Make
   command: >
@@ -108,9 +81,8 @@
       /usr/bin/gmake
   register: makeResult
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: True
 
-# - debug: var=makeResult
+- debug: var=makeResult verbosity=2
 
 - name: Gmake Check
   command: >
@@ -120,7 +92,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   ignore_errors: yes
 
-# - debug: var=checkResult
+- debug: var=checkResult verbosity=2
 
 - name: Gmake Install
   command: >
@@ -128,9 +100,8 @@
       /usr/bin/gmake install
   register: installResult
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: yes
 
-# - debug: var=installResult
+- debug: var=installResult verbosity=2
 
 - name: Set ICU_HOME if configured.
   template:

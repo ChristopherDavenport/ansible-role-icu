@@ -8,6 +8,14 @@ env:
   - distro: centos7
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 57
+  - distro: centos7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    icu_version: 56
+  - distro: centos7
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
     icu_version: 52
   - distro: centos7
     init: /usr/lib/systemd/systemd
@@ -17,6 +25,14 @@ env:
     init: /sbin/init
     run_opts: ""
     icu_version: 58
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 57
+  - distro: centos6
+    init: /sbin/init
+    run_opts: ""
+    icu_version: 56
   - distro: centos6
     init: /sbin/init
     run_opts: ""
