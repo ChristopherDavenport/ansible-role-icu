@@ -19,3 +19,29 @@ icu_version:
 
 icu_base: /usr/local/include
 icu_home: "{{ icu_base }}/icu"
+
+# Referencing https://sourceforge.net/p/icu/mailman/message/32443311/
+# From file test/intltest/dtfmttst.cpp
+# 52.1 and 53.1 will have expected errors on the parse2DigitYear Test as we
+# are now within 20 years of 2034. It expects to be parsed as 1934 and instead
+# receives 2034
+# icu_time_based_expected_error: "ok:  testdata iotest cintltst"
+
+icu_2DigitYearFix:
+  - regex: "^    parse2DigitYear(fmt, "5/6/17", date(117, UCAL_JUNE, 5));$"
+    line:  "    parse2DigitYear(fmt, "5/6/30", date(130, UCAL_JUNE, 5));"
+  - regex: "^    parse2DigitYear(fmt, "4/6/34", date(34, UCAL_JUNE, 4));$"
+    line:  "    parse2DigitYear(fmt, "4/6/50", date(50, UCAL_JUNE, 4));"
+
+# [
+# "| ***     FAILING TEST SUMMARY FOR:              intltest  ",
+# "         TestTwoDigitYear",
+# "      DateFormatTest",
+# "   format",
+# "| *** END FAILING TEST SUMMARY FOR:              intltest",
+# "---------------",
+# "ALL TESTS SUMMARY:",
+# "ok:  testdata iotest cintltst",
+# "===== ERRS:  intltest",
+# "make[1]: Leaving directory `/usr/local/include/icu/source/test'"
+# ]

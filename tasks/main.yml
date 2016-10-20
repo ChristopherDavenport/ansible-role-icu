@@ -38,8 +38,17 @@
     remote_src: yes
     keep_newer: yes
 
+- name: Fix For Early Version Error parse2DigitYear - See Defaults For Why
+  lineinfile:
+    dest: "{{ icu_base }}/icu/source/test/intltest/dtfmttst.cpp"
+    line: "{{ item.line }}"
+    regexp: "{{ item.regex }}"
+    state: present
+  with_items: icu_2DigitYearFix
+  when: icu_version <= 53
+
 - name: Check Current ICU Version
-  shell: "{{ icu_version_command }}"
+  shell: /usr/local/bin/icu-config --version
   register: icu_config_version
   changed_when: False
   ignore_errors: True
@@ -75,15 +84,12 @@
     target: check
   register: icu_check_result
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: True
-
-# - name: Debug of make check
-#   debug: var=icu_check_result
 
 - name: Make Install
   make:
     chdir: "{{ icu_base }}/icu/source"
     target: install
+  register: icu_install_result
   when: icu_config_version.stdout != icu_config_version_expected
 
 # - debug: var=configureResult verbosity=2
