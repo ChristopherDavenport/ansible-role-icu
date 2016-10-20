@@ -6,6 +6,12 @@
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
 
+- name: Check Current ICU Version
+  shell: /usr/local/bin/icu-config --version
+  register: icu_config_version
+  changed_when: False
+  ignore_errors: True
+
 - name: Download ICU with Checksum
   get_url:
     url: "{{ icu_url }}"
@@ -15,7 +21,9 @@
   register: get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
-  when: icu_checksum is defined
+  when:
+    - icu_checksum is defined
+    - icu_config_version.stdout != icu_config_version_expected
 
 - name: Unarchive ICU
   unarchive:
@@ -23,12 +31,13 @@
     dest: "{{ icu_base }}"
     remote_src: yes
     keep_newer: yes
+  when: icu_config_version.stdout != icu_config_version_expected
 
-- name: Check Current ICU Version
-  shell: /usr/local/bin/icu-config --version
-  register: icu_config_version
-  changed_when: False
-  ignore_errors: True
+- name: Remove Archive File
+  file:
+    path: "{{ icu_base }}/{{ icu_archive_file }}"
+    state: absent
+  when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Fix For Early Version Error parse2DigitYear - See Defaults For Why
   lineinfile:

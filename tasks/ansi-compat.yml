@@ -105,6 +105,7 @@
 
 - name: Fix msgfmt.cpp
   replace:
+    dest: "{{ icu_base }}/icu/source/i18n/msgfmt.cpp"
     regexp: '^            Format\* formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);$'
     replace: "            Format* formatter = NULL;
             if (explicitType[0] == '%' ) {
