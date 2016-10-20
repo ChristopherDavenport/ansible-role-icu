@@ -38,20 +38,24 @@
     remote_src: yes
     keep_newer: yes
 
+- name: Check Current ICU Version
+  shell: /usr/local/bin/icu-config --version
+  register: icu_config_version
+  changed_when: False
+  ignore_errors: True
+
 - name: Fix For Early Version Error parse2DigitYear - See Defaults For Why
   lineinfile:
     dest: "{{ icu_base }}/icu/source/test/intltest/dtfmttst.cpp"
     line: "{{ item.line }}"
     regexp: "{{ item.regex }}"
     state: present
+    backrefs: yes
   with_items: "{{ icu_2DigitYearFix }}"
-  when: icu_apply_date_fix
-
-- name: Check Current ICU Version
-  shell: /usr/local/bin/icu-config --version
-  register: icu_config_version
-  changed_when: False
-  ignore_errors: True
+  when:
+    - icu_config_version.stdout != icu_config_version_expected
+    - icu_apply_date_fix is defined
+    - icu_apply_date_fix
 
 # - name: Current Icu Version Is
 #   debug: var=icu_config_version.stdout verbosity=2
