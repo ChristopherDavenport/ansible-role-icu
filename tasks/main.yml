@@ -1,6 +1,6 @@
 ---
 
-# - debug: msg="Version set to {{ icu_version }}" verbosity=2o
+- debug: var=icu_version
 
 - include: setup-{{ ansible_os_family }}.yml
   static: no
@@ -44,8 +44,8 @@
     line: "{{ item.line }}"
     regexp: "{{ item.regex }}"
     state: present
-  with_items: icu_2DigitYearFix
-  when: icu_version <= 53
+  with_items: "{{ icu_2DigitYearFix }}"
+  when: icu_apply_date_fix
 
 - name: Check Current ICU Version
   shell: /usr/local/bin/icu-config --version
