@@ -56,26 +56,34 @@
     remote_src: yes
     keep_newer: yes
 
-- name: Check Current ICU Version
+- name: Check Current ICU Version With Checksum
   shell: /usr/local/bin/icu-config --version
   register: icu_config_version
   changed_when: False
+  when: icu_checksum is defined
   ignore_errors: True
 
-- name: Update
-  command: /usr/bin/updatedb
-  when: icu_checksum is not defined
+- name: Check Current ICU Version Without Checksum
+  command: /usr/local/include/icu/source/config/test-icu-config.sh --version
+  register: icu_config_version
+  changed_when: False
+  when: icu_checksum is defined
   ignore_errors: True
 
-- name: Locate icu-config
-  command: locate icu-config
-  register: locate_icu_config
-  when: icu_checksum is not defined
-  ignore_errors: True
-
-- name: Icu Location If Exists
-  debug: var=locate_icu_config
-  when: icu_checksum is not defined
+# - name: Update DB
+#   command: /usr/bin/updatedb
+#   when: icu_checksum is not defined
+#   ignore_errors: True
+#
+# - name: Locate icu-config
+#   command: locate icu-config
+#   register: locate_icu_config
+#   when: icu_checksum is not defined
+#   ignore_errors: True
+#
+# - name: Icu Location If Exists
+#   debug: var=locate_icu_config
+#   when: icu_checksum is not defined
 
 - name: Current Icu Version Is
   debug: var=icu_config_version.stdout
@@ -119,7 +127,7 @@
       /usr/bin/gmake check
   register: checkResult
   when: icu_config_version.stdout != icu_config_version_expected
-  # ignore_errors: yes
+  ignore_errors: yes
 
 - debug: var=checkResult
 
