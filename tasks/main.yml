@@ -1,11 +1,13 @@
 ---
 
-- debug: msg="Version set to {{ icu_version }}" verbosity=2
+# - debug: msg="Version set to {{ icu_version }}" verbosity=2
 
 - include: setup-RedHat.yml
+  static: no
   when: ansible_os_family == "RedHat"
 
 - include: setup-Debian.yml
+  static: no
   when: ansible_os_family == "Debian"
 
 - name: Include version-specific variables for ICU.
@@ -22,17 +24,17 @@
   retries: 5
   when: icu_checksum is defined
 
-- name: Check if file exists without checksum
-  stat:
-    path: "{{ icu_base }}/{{ icu_archive_file }}"
-  register: icu_archive_stat
-  when: icu_checksum is not defined
+# - name: Check if file exists without checksum
+#   stat:
+#     path: "{{ icu_base }}/{{ icu_archive_file }}"
+#   register: icu_archive_stat
+#   when: icu_checksum is not defined
 
-- name: Download ICU without checksum
-  command: >
-    chdir={{ icu_base }}
-    wget {{ icu_url }}
-  when: icu_checksum is not defined and not icu_archive_stat.stat.exists
+# - name: Download ICU without checksum
+#   command: >
+#     chdir={{ icu_base }}
+#     wget {{ icu_url }}
+#   when: icu_checksum is not defined and not icu_archive_stat.stat.exists
 
 - name: Unarchive ICU
   unarchive:
@@ -41,17 +43,17 @@
     remote_src: yes
     keep_newer: yes
 
-- name: Check Current ICU Version With Checksum
+- name: Check Current ICU Version
   shell: "{{ icu_version_command }}"
   register: icu_config_version
   changed_when: False
   ignore_errors: True
 
-- name: Current Icu Version Is
-  debug: var=icu_config_version.stdout verbosity=2
-
-- name: Expected Icu Version Is
-  debug: var=icu_config_version_expected verbosity=2
+# - name: Current Icu Version Is
+#   debug: var=icu_config_version.stdout verbosity=2
+#
+# - name: Expected Icu Version Is
+#   debug: var=icu_config_version_expected verbosity=2
 
 - name: Run Configure ICU
   command: >
@@ -60,44 +62,69 @@
   register: configureResult
   when: icu_config_version.stdout != icu_config_version_expected
 
-- debug: var=configureResult verbosity=2
-
-- name: Gmake Clean
-  command: >
-      chdir={{ icu_base }}/icu/source
-      /usr/bin/gmake clean
-  register: cleanResult
+- name: Make Clean
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: clean
   when: icu_config_version.stdout != icu_config_version_expected
 
-- debug: var=cleanResult verbosity=2
-
-- name: Gmake To Make
-  command: >
-      chdir={{ icu_base }}/icu/source
-      /usr/bin/gmake
-  register: makeResult
+- name: Make
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: clean
   when: icu_config_version.stdout != icu_config_version_expected
 
-- debug: var=makeResult verbosity=2
-
-- name: Gmake Check
-  command: >
-      chdir={{ icu_base }}/icu/source
-      /usr/bin/gmake check
-  register: checkResult
+- name: Make Check
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: check
   when: icu_config_version.stdout != icu_config_version_expected
   ignore_errors: yes
 
-- debug: var=checkResult verbosity=2
-
-- name: Gmake Install
-  command: >
-      chdir={{ icu_base }}/icu/source
-      /usr/bin/gmake install
-  register: installResult
+- name: Make Install
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: install
   when: icu_config_version.stdout != icu_config_version_expected
 
-- debug: var=installResult verbosity=2
+# - debug: var=configureResult verbosity=2
+#
+# - name: Gmake Clean
+#   command: >
+#       chdir={{ icu_base }}/icu/source
+#       /usr/bin/gmake clean
+#   register: cleanResult
+#   when: icu_config_version.stdout != icu_config_version_expected
+#
+# - debug: var=cleanResult verbosity=2
+#
+# - name: Gmake To Make
+#   command: >
+#       chdir={{ icu_base }}/icu/source
+#       /usr/bin/gmake
+#   register: makeResult
+#   when: icu_config_version.stdout != icu_config_version_expected
+#
+# - debug: var=makeResult verbosity=2
+#
+# - name: Gmake Check
+#   command: >
+#       chdir={{ icu_base }}/icu/source
+#       /usr/bin/gmake check
+#   register: checkResult
+#   when: icu_config_version.stdout != icu_config_version_expected
+#   ignore_errors: yes
+#
+# - debug: var=checkResult verbosity=2
+#
+# - name: Gmake Install
+#   command: >
+#       chdir={{ icu_base }}/icu/source
+#       /usr/bin/gmake install
+#   register: installResult
+#   when: icu_config_version.stdout != icu_config_version_expected
+#
+# - debug: var=installResult verbosity=2
 
 - name: Set ICU_HOME if configured.
   template:
