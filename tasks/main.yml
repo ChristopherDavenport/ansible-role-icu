@@ -62,8 +62,13 @@
   changed_when: False
   ignore_errors: True
 
+- name: Update
+  command: /usr/bin/updatedb
+  when: icu_checksum is not defined
+  ignore_errors: True
+
 - name: Locate icu-config
-  shell: locate icu-config
+  command: locate icu-config
   register: locate_icu_config
   when: icu_checksum is not defined
   ignore_errors: True
