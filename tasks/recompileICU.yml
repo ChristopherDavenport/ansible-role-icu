@@ -1,0 +1,33 @@
+---
+
+- name: Run Configure ICU
+  command: >
+      chdir={{ icu_base }}/icu/source
+      {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
+  register: configureResult
+  # when: icu_config_version.stdout != icu_config_version_expected
+
+- name: Make Clean
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: clean
+  # when: icu_config_version.stdout != icu_config_version_expected
+
+- name: Make
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+  # when: icu_config_version.stdout != icu_config_version_expected
+
+- name: Make Check
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: check
+  register: icu_check_result
+  # when: icu_config_version.stdout != icu_config_version_expected
+
+- name: Make Install
+  make:
+    chdir: "{{ icu_base }}/icu/source"
+    target: install
+  register: icu_install_result
+  # when: icu_config_version.stdout != icu_config_version_expected

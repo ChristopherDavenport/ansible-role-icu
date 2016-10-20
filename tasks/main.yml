@@ -10,6 +10,7 @@
   shell: /usr/local/bin/icu-config --version
   register: icu_config_version
   changed_when: False
+  notify: Recompile ICU
   ignore_errors: True
 
 - name: Download ICU with Checksum
@@ -21,16 +22,13 @@
   register: get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
-  when:
-    - icu_checksum is defined
-    - icu_config_version.stdout != icu_config_version_expected
+  when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Unarchive ICU
   unarchive:
     src: "{{ icu_base }}/{{ icu_archive_file }}"
     dest: "{{ icu_base }}"
     remote_src: yes
-    keep_newer: yes
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Remove Archive File
@@ -47,52 +45,26 @@
     state: present
     backrefs: yes
   with_items: "{{ icu_2DigitYearFix }}"
+  notify: Recompile ICU
   when:
-    - icu_config_version.stdout != icu_config_version_expected
     - icu_apply_date_fix is defined
     - icu_apply_date_fix
 
 - name: Apply Fixes For ansi compatibility
-  include: ansi-compat.yml
+  include: ansi-compatibility.yml
+  static: no
   when:
-    - icu_config_version.stdout != icu_config_version_expected
-    # Temporary Force Application
+    - icu_ansi_compatibility is defined
+    - icu_ansi_compatibility
 
-- name: Run Configure ICU
-  command: >
-      chdir={{ icu_base }}/icu/source
-      {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
-  register: configureResult
-  when: icu_config_version.stdout != icu_config_version_expected
-
-- name: Make Clean
-  make:
-    chdir: "{{ icu_base }}/icu/source"
-    target: clean
-  when: icu_config_version.stdout != icu_config_version_expected
-
-- name: Make
-  make:
-    chdir: "{{ icu_base }}/icu/source"
-  when: icu_config_version.stdout != icu_config_version_expected
-
-- name: Make Check
-  make:
-    chdir: "{{ icu_base }}/icu/source"
-    target: check
-  register: icu_check_result
-  when: icu_config_version.stdout != icu_config_version_expected
-
-- name: Make Install
-  make:
-    chdir: "{{ icu_base }}/icu/source"
-    target: install
-  register: icu_install_result
-  when: icu_config_version.stdout != icu_config_version_expected
+- name: Re/Compile If Necessary
+  meta: flush_handlers
 
 - name: Set ICU_HOME if configured.
   template:
     src: icu_home.sh.j2
     dest: /etc/profile.d/icu_home.sh
     mode: 0644
-  when: icu_home is defined
+  when:
+    - set_icu_home is defined
+    - set_icu_home

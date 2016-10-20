@@ -1,0 +1,4 @@
+---
+
+- name: Recompile ICU
+  include: recompileICU.yml
