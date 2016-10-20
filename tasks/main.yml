@@ -57,7 +57,7 @@
     keep_newer: yes
 
 - name: Check Current ICU Version With Checksum
-  shell: /usr/local/bin/icu-config --version
+  command: /usr/local/bin/icu-config --version
   register: icu_config_version
   changed_when: False
   when: icu_checksum is defined
@@ -67,7 +67,7 @@
   command: /usr/local/include/icu/source/config/test-icu-config.sh --version
   register: icu_config_version
   changed_when: False
-  when: icu_checksum is defined
+  when: icu_checksum is not defined
   ignore_errors: True
 
 # - name: Update DB
@@ -86,9 +86,9 @@
 #   when: icu_checksum is not defined
 
 - name: Current Icu Version Is
-  debug: var=icu_config_version.stdout
+  debug: var=icu_config_version
 
-- name: Expecte Icu Version Is
+- name: Expected Icu Version Is
   debug: var=icu_config_version_expected
 
 - name: Run Configure ICU
@@ -99,7 +99,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   # ignore_errors: True
 
-- debug: var=configureResult
+# - debug: var=configureResult
 
 - name: Gmake Clean
   command: >
@@ -109,7 +109,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   # ignore_errors: True
 
-- debug: var=cleanResult
+# - debug: var=cleanResult
 
 - name: Gmake To Make
   command: >
@@ -119,7 +119,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   # ignore_errors: True
 
-- debug: var=makeResult
+# - debug: var=makeResult
 
 - name: Gmake Check
   command: >
@@ -129,7 +129,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   ignore_errors: yes
 
-- debug: var=checkResult
+# - debug: var=checkResult
 
 - name: Gmake Install
   command: >
@@ -139,7 +139,7 @@
   when: icu_config_version.stdout != icu_config_version_expected
   # ignore_errors: yes
 
-- debug: var=installResult
+# - debug: var=installResult
 
 - name: Set ICU_HOME if configured.
   template:
