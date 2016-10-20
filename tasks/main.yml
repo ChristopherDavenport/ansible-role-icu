@@ -61,12 +61,14 @@
   ignore_errors: True
 
 - name: Locate icu-config
-  command: locate icu-config
+  shell: locate icu-config
   register: locate_icu_config
+  when: icu_checksum is not defined
   ignore_errors: True
 
 - name: Icu Location If Exists
   debug: var=locate_icu_config
+  when: icu_checksum is not defined
 
 - name: Current Icu Version Is
   debug: var=icu_config_version.stdout
@@ -80,7 +82,7 @@
       {{ icu_base }}/icu/source/runConfigureICU Linux/gcc
   register: configureResult
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: True
+  # ignore_errors: True
 
 - debug: var=configureResult
 
@@ -90,7 +92,7 @@
       /usr/bin/gmake clean
   register: cleanResult
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: True
+  # ignore_errors: True
 
 - debug: var=cleanResult
 
@@ -100,7 +102,7 @@
       /usr/bin/gmake
   register: makeResult
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: True
+  # ignore_errors: True
 
 - debug: var=makeResult
 
@@ -110,7 +112,7 @@
       /usr/bin/gmake check
   register: checkResult
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: yes
+  # ignore_errors: yes
 
 - debug: var=checkResult
 
@@ -120,7 +122,7 @@
       /usr/bin/gmake install
   register: installResult
   when: icu_config_version.stdout != icu_config_version_expected
-  ignore_errors: yes
+  # ignore_errors: yes
 
 - debug: var=installResult
 
