@@ -1,6 +1,4 @@
 ---
 - hosts: all
-  vars:
-    ansi_compat: True
   roles:
     - role_under_test

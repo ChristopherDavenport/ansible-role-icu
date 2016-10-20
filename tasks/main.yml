@@ -47,8 +47,7 @@
   include: ansi-compat.yml
   when:
     - icu_config_version.stdout != icu_config_version_expected
-    - ansi-compat is defined
-    - ansi-compat
+    # Temporary Force Application
 
 - name: Run Configure ICU
   command: >
