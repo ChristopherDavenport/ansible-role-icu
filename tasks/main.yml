@@ -18,10 +18,9 @@
     dest: "{{ icu_base }}"
     checksum: "{{ icu_checksum }}"
     timeout: 30
-  register: get_url_result
+  register: icu_get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 5
-  notify: ICU Set Recompile
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Unarchive ICU
@@ -29,6 +28,7 @@
     src: "{{ icu_base }}/{{ icu_archive_file }}"
     dest: "{{ icu_base }}"
     remote_src: yes
+  register: icu_unarchive_result
   when: icu_config_version.stdout != icu_config_version_expected
 
 - name: Remove Archive File
@@ -44,7 +44,7 @@
     state: present
     backrefs: yes
   with_items: "{{ icu_2DigitYearFix }}"
-  notify: ICU Set Recompile
+  register: icu_date_fix_result
   when: icu_apply_date_fix
 
 - name: Apply Fixes For ansi compatibility
@@ -53,13 +53,20 @@
 - name: Set ICU_HOME if configured.
   template:
     src: icu_home.sh.j2
-    dest: /etc/profile.d/icu_home.sh
+    dest: "/etc/profile.d/{{ icu_home_shell_name }}"
     mode: 0644
   when: icu_set_home
 
-- name: Flush Handlers To Set Recompile
-  meta: flush_handlers
-
 - name: Recompile If Necessary
   include: recompileICU.yml
-  when: icu_recompile
+  when: icu_config_version.stdout != icu_config_version_expected or
+        icu_get_url_result|changed or
+        icu_unarchive_result|changed or
+        icu_date_fix_result|changed or
+        icu_fix_messagepattern_result|changed or
+        icu_fix_fmtable_result|changed or
+        icu_fix_msgfmt_include_result|changed or
+        icu_fix_msgfmt_class_result|changed or
+        icu_fix_msgfmt_cpp_add_result|changed or
+        icu_fix_msgfmt_cpp_remove_result|changed or
+        icu_recompile

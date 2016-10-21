@@ -2,23 +2,24 @@
 
 [![Build Status](https://travis-ci.org/ChristopherDavenport/ansible-role-icu.svg?branch=master)](https://travis-ci.org/ChristopherDavenport/ansible-role-icu)
 
-Installs Internation Components for Unicode on Remote Servers
+Installs International Components for Unicode on Remote Servers
 
 Current Supported Operating Systems include RedHat, Centos, Fedora, Debian,
 Ubuntu, FreeBSD(although I don't have a testing environment for FreeBSD in
 travis if anyone would like to set that up). It also ignore errors on the
 includes so assuming your operating system has the requirements listed below
 it should work there as well. Would love some testers for Oracle Linux and
-Solaris which I believe should both support this build if they have
+Solaris which I believe should both support this build.
 
 There is a sub-branch proving the workability of the ansi-modifications in
 the ansi-modifications branch. Which you can check out on travis.
 
 All changes made by internal code are reversible via the boolean switches
-discussed below, including switching between versions. An avenue of future expansion would be include a variable with state present or absent to show whether this should be installed or will remove all traces of ICU from
-the systems. This would likely include a little manipulation but could be
-done easily enough.
-
+discussed below, including switching between versions.
+An avenue of future expansion would be include a variable with state present or
+absent to show whether this should be installed or will remove all traces of
+ICU from the systems. This would likely include a little manipulation but
+could be done easily enough.
 
 ## Requirements
 
@@ -45,11 +46,13 @@ icu_base is the base location for the install.
 icu_base: /usr/local/include
 ```
 
+#### ICU HOME Environmental Variable
 
-If you would like to set ICU_HOME variable.
+If you would like to set ICU_HOME variable. This is installed for profiles
+at ```/etc/profile.d```
 
 ```
-set_icu_home: False
+icu_set_home: False
 ```
 
 The icu home variable is by default in a new folder hanging off the icu base
@@ -59,6 +62,16 @@ this can be overridden by setting icu_home.
 icu_home: {{ icu_base }}/icu
 ```
 
+This allows you to change the name of the file that gets put in profile.d incase
+you have a specific filename you expect to call to receive ICU_HOME for
+scripting.
+
+```
+icu_home_shell_name: icu_home.sh
+```
+
+#### Ansi Compatibility
+
 Finally some people may want some less traditional ansi allowances baked into
 the code and this is allowed. Looking at all the folks in the Higher Education
 Community.
@@ -67,9 +80,12 @@ Community.
 icu_ansi_compatibility=False
 ```
 
+#### Date Fix
+
 There is a fix for earlier versions(49-53) of icu baked into this build. I highly
-reccomend that you leave these fixes in place as they are just a modification
-and the ansible build will fail at the check step and you will need to run the
+recommend that you leave these fixes in place as they are just a modification
+of one of the test builds that was based on the current date if not in place
+the ansible  build will fail at the check step and you will need to run the
 final install step manually.
 
 ```
@@ -94,7 +110,7 @@ icu_recompile: False
 ```
 - hosts: appserver
   vars:
-    set_icu_home: True
+    icu_set_home: True
   roles:
     - ChristopherDavenport.icu
 ```

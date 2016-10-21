@@ -12,6 +12,9 @@ icu_set_home: False
 # The directory to set ICU_HOME variable to if requested it be set.
 icu_home: "{{ icu_base }}/icu"
 
+# ICU HOME Shell Name
+icu_home_shell_name: icu_home.sh
+
 # Modification for some old code. Very unlikely except for some specific
 # individuals that you will need this, however Higher Education needs these
 # changes for working with some products.
