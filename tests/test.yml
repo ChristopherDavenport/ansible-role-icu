@@ -1,4 +1,7 @@
 ---
 - hosts: all
+  vars:
+    icu_set_home: True
+    icu_ansi_compatibility: True
   roles:
     - role_under_test
