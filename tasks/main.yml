@@ -59,4 +59,4 @@
   when: icu_set_home
 
 - name: Trigger Recompile Execution Check
-  notify: ICU Recompile Check
+  register: ICU Recompile Check
