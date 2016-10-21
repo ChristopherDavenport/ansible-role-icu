@@ -1,4 +1,7 @@
 ---
 - hosts: all
+  tasks:
+    - set_fact:
+        icu_ansi_compatibility: "{{ [True, False]| random }}"
   roles:
     - role_under_test

@@ -108,7 +108,7 @@
 - name: Remove Fix for msgfmt.cpp
   replace:
     dest: "{{ icu_base }}/icu/source/i18n/msgfmt.cpp"
-    regexp: '            Format\* formatter \= NULL;\n            if \(explicitType\[0\] \=\= '%' \) {\n               addAnsiPattern\(argNumber,explicitType\);\n              formattableType\=Formattable::kAnsiPattern;\n             }\n            else\n            formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);\n'
+    regexp: "            Format\* formatter \= NULL;\n            if \(explicitType\[0\] \=\= '%' \) {\n               addAnsiPattern\(argNumber,explicitType\);\n              formattableType\=Formattable::kAnsiPattern;\n             }\n            else\n            formatter \= createAppropriateFormat\(explicitType, style, formattableType, parseError, status\);\n"
     replace: "            Format* formatter = createAppropriateFormat(explicitType, style, formattableType, parseError, status);\n"
   notify: ICU Set Recompile
   when: not icu_ansi_compatibility
