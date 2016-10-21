@@ -2,10 +2,3 @@
 
 - name: ICU Set Recompile
   set_fact: icu_recompile=True
-
-- name: ICU Recompile Check
-  notify: ICU Recompile
-  when: icu_recompile
-
-- name: ICU Recompile
-  include: recompileICU.yml

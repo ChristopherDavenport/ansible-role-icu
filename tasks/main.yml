@@ -58,5 +58,9 @@
     mode: 0644
   when: icu_set_home
 
-- name: Trigger Recompile Execution Check
-  register: ICU Recompile Check
+- name: Flush Handlers To Set Recompile
+  meta: flush_handlers
+
+- name: Recompile If Necessary
+  include: recompileICU.yml
+  when: icu_recompile
