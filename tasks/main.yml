@@ -19,7 +19,7 @@
     checksum: "{{ icu_checksum }}"
     timeout: 30
   register: icu_get_url_result
-  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  until: "'OK' in icu_get_url_result.msg or 'file already exists' in icu_get_url_result.msg"
   retries: 5
   when: icu_config_version.stdout != icu_config_version_expected
 
