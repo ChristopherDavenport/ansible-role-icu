@@ -50,7 +50,6 @@
 
 - name: Apply Fixes For ansi compatibility
   include: ansi-compatibility.yml
-  # when: icu_ansi_compatibility
 
 - name: Set ICU_HOME if configured.
   template:
@@ -59,5 +58,5 @@
     mode: 0644
   when: icu_set_home
 
-- name: Trigger Execution:
+- name: Trigger Recompile Execution Check
   notify: ICU Recompile Check

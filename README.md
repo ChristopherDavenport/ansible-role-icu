@@ -40,7 +40,8 @@ icu_home: {{ icu_base }}/icu
 ```
 
 Finally some people may want some less traditional ansi allowances baked into
-the code and this is allowed be
+the code and this is allowed. Looking at all the folks in the Higher Education
+Community.
 
 ```
 icu_ansi_compatibility=False
