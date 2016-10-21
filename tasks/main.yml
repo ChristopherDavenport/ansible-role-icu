@@ -4,6 +4,7 @@
 
 - name: Include version-specific variables for ICU.
   include_vars: "icu-{{ icu_version }}.yml"
+  ignore_errors: True
 
 - name: Check Current ICU Version
   shell: /usr/local/bin/icu-config --version
@@ -44,9 +45,7 @@
     backrefs: yes
   with_items: "{{ icu_2DigitYearFix }}"
   notify: ICU Set Recompile
-  when:
-    - icu_apply_date_fix is defined
-    - icu_apply_date_fix
+  when: icu_apply_date_fix
 
 - name: Apply Fixes For ansi compatibility
   include: ansi-compatibility.yml

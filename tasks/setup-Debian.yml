@@ -12,3 +12,6 @@
     - gcc
     - g++
     - make
+  register: icu_package_install
+  until: icu_package_install.changed or not icu_package_install.changed
+  retries: 5

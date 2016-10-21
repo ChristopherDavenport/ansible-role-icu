@@ -5,6 +5,4 @@ icu_archive_file: "icu4c-53_1-src.tgz"
 icu_url: "{{ icu_base_url }}/{{ icu_archive_file }}"
 icu_checksum: md5:b73baa6fbdfef197608d1f69300919b9
 
-icu_apply_date_fix: True
-
 icu_config_version_expected: "53.1"

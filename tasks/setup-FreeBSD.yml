@@ -5,6 +5,9 @@
   with_items:
     - make
     - lang/gcc62
+  register: icu_package_install
+  until: icu_package_install.changed or not icu_package_install.changed
+  retries: 5
 
 - name: ensure proc is mounted
   mount: name=/proc fstype=procfs src=proc opts=rw state=mounted
