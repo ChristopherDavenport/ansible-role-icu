@@ -1,0 +1,4 @@
+---
+
+- name: ICU Set Recompile
+  set_fact: icu_recompile=True

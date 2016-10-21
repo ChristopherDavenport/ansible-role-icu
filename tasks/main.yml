@@ -1,11 +1,66 @@
 ---
 
+- include: setup-{{ ansible_os_family }}.yml
+
+- name: Include version-specific variables for ICU.
+  include_vars: "icu-{{ icu_version }}.yml"
+
+- name: Check Current ICU Version
+  shell: /usr/local/bin/icu-config --version
+  register: icu_config_version
+  changed_when: False
+  ignore_errors: True
+
+- name: Download ICU with Checksum
+  get_url:
+    url: "{{ icu_url }}"
+    dest: "{{ icu_base }}"
+    checksum: "{{ icu_checksum }}"
+    timeout: 30
+  register: get_url_result
+  until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
+  retries: 5
+  notify: ICU Set Recompile
+  when: icu_config_version.stdout != icu_config_version_expected
+
 - name: Unarchive ICU
-  unarchive: src=http://download.icu-project.org/files/icu4c/52.1/icu4c-52_1-src.tgz dest={{ icu_base }} remote_src=yes
+  unarchive:
+    src: "{{ icu_base }}/{{ icu_archive_file }}"
+    dest: "{{ icu_base }}"
+    remote_src: yes
+  when: icu_config_version.stdout != icu_config_version_expected
+
+- name: Remove Archive File
+  file:
+    path: "{{ icu_base }}/{{ icu_archive_file }}"
+    state: absent
+
+- name: Fix For Early Version Error parse2DigitYear - See Defaults For Why
+  lineinfile:
+    dest: "{{ icu_base }}/icu/source/test/intltest/dtfmttst.cpp"
+    line: "{{ item.line }}"
+    regexp: "{{ item.regex }}"
+    state: present
+    backrefs: yes
+  with_items: "{{ icu_2DigitYearFix }}"
+  notify: ICU Set Recompile
+  when:
+    - icu_apply_date_fix is defined
+    - icu_apply_date_fix
+
+- name: Apply Fixes For ansi compatibility
+  include: ansi-compatibility.yml
 
 - name: Set ICU_HOME if configured.
   template:
     src: icu_home.sh.j2
     dest: /etc/profile.d/icu_home.sh
     mode: 0644
-  when: icu_home
+  when: icu_set_home
+
+- name: Flush Handlers To Set Recompile
+  meta: flush_handlers
+
+- name: Recompile If Necessary
+  include: recompileICU.yml
+  when: icu_recompile

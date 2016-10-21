@@ -1,0 +1,13 @@
+---
+
+- name: Make Sure All Required Packages Are Present
+  pkgng: "name={{ item }} state=present"
+  with_items:
+    - make
+    - lang/gcc62
+
+- name: ensure proc is mounted
+  mount: name=/proc fstype=procfs src=proc opts=rw state=mounted
+
+- name: ensure fdesc is mounted
+  mount: name=/dev/fd fstype=fdescfs src=fdesc opts=rw state=mounted
