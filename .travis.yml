@@ -1,306 +1,477 @@
+language: python
 services: docker
 
 env:
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 58
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 58
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "58"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 58
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 58
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 58
-  - distro: debian8
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "58"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 58
-  - distro: fedora24
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 58
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 57
-  - distro: centos6
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "58"
     init: /sbin/init
     run_opts: ""
-    icu_version: 57
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "58"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "58"
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: EL
+    distribution_version: "6"
+    version: "58"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "8"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "58"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 57
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 57
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 57
-  - distro: debian8
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "8"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "57"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 57
-  - distro: fedora24
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 57
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 56
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 56
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "57"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 56
-  - distro: ubuntu1404
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "57"
     init: /sbin/init
     run_opts: ""
-    icu_version: 56
-  - distro: ubuntu1204
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "57"
     init: /sbin/init
     run_opts: ""
-    icu_version: 56
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 56
-  - distro: fedora24
+  - distribution: EL
+    distribution_version: "7"
+    version: "57"
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 56
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 55
-  - distro: centos6
+  - distribution: EL
+    distribution_version: "6"
+    version: "57"
     init: /sbin/init
     run_opts: ""
-    icu_version: 55
-  - distro: ubuntu1604
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "7"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "57"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 55
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 55
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 55
-  - distro: debian8
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "7"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "56"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 55
-  - distro: fedora24
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 55
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 54
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 54
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "56"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 54
-  - distro: ubuntu1404
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "56"
     init: /sbin/init
     run_opts: ""
-    icu_version: 54
-  - distro: ubuntu1204
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "56"
     init: /sbin/init
     run_opts: ""
-    icu_version: 54
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 54
-  - distro: fedora24
+  - distribution: EL
+    distribution_version: "7"
+    version: "56"
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 54
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 53
-  - distro: centos6
+  - distribution: EL
+    distribution_version: "6"
+    version: "56"
     init: /sbin/init
     run_opts: ""
-    icu_version: 53
-  - distro: ubuntu1604
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "8"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "56"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 53
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 53
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 53
-  - distro: debian8
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "8"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "55"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 53
-  - distro: fedora24
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 53
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 52
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 52
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "55"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 52
-  - distro: ubuntu1404
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "55"
     init: /sbin/init
     run_opts: ""
-    icu_version: 52
-  - distro: ubuntu1204
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "55"
     init: /sbin/init
     run_opts: ""
-    icu_version: 52
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 52
-  - distro: fedora24
+  - distribution: EL
+    distribution_version: "7"
+    version: "55"
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 52
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 51
-  - distro: centos6
+  - distribution: EL
+    distribution_version: "6"
+    version: "55"
     init: /sbin/init
     run_opts: ""
-    icu_version: 51
-  - distro: ubuntu1604
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "7"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "55"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 51
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 51
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 51
-  - distro: debian8
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "7"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "54"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 51
-  - distro: fedora24
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 51
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 50
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 50
-  - distro: ubuntu1604
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "54"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 50
-  - distro: ubuntu1404
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "54"
     init: /sbin/init
     run_opts: ""
-    icu_version: 50
-  - distro: ubuntu1204
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "54"
     init: /sbin/init
     run_opts: ""
-    icu_version: 50
-  - distro: debian8
-    init: /lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 50
-  - distro: fedora24
+  - distribution: EL
+    distribution_version: "7"
+    version: "54"
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 50
-  - distro: centos7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 49
-  - distro: centos6
+  - distribution: EL
+    distribution_version: "6"
+    version: "54"
     init: /sbin/init
     run_opts: ""
-    icu_version: 49
-  - distro: ubuntu1604
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "8"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "54"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 49
-  - distro: ubuntu1404
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 49
-  - distro: ubuntu1204
-    init: /sbin/init
-    run_opts: ""
-    icu_version: 49
-  - distro: debian8
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "8"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "53"
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 49
-  - distro: fedora24
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "53"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "53"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "53"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "53"
     init: /usr/lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    icu_version: 49
+  - distribution: EL
+    distribution_version: "6"
+    version: "53"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "7"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "53"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "7"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "52"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "52"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "52"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "52"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "52"
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: EL
+    distribution_version: "6"
+    version: "52"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "8"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "52"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "8"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "51"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "51"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "51"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "51"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "51"
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: EL
+    distribution_version: "6"
+    version: "51"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "7"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "51"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "7"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "50"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "50"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "50"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "50"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "50"
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: EL
+    distribution_version: "6"
+    version: "50"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "8"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "50"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "8"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: yakkety
+    version: "49"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: xenial
+    version: "49"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: Ubuntu
+    distribution_version: trusty
+    version: "49"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: Ubuntu
+    distribution_version: precise
+    version: "49"
+    init: /sbin/init
+    run_opts: ""
+  - distribution: EL
+    distribution_version: "7"
+    version: "49"
+    init: /usr/lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  - distribution: EL
+    distribution_version: "6"
+    version: "49"
+    init: /sbin/init
+    run_opts: ""
+  # - distribution: EL
+  #   distribution_version: "5"
+    # version: "7"
+  #   init: /sbin/init
+  #   run_opts: ""
+  - distribution: Debian
+    distribution_version: jessie
+    version: "49"
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # - distribution: Fedora
+  #   distribution_version: "24"
+    # version: "7"
+  #   init: /usr/lib/systemd/systemd
+  #   run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 
 before_install:
   # Pull container.
-  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
+  - 'docker pull ansiblecheck/ansiblecheck:${distribution,,}-${distribution_version}'
 
 script:
   - container_id=$(mktemp)
   - echo "${icu_version}"
   # Run container in detached state.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
+  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} ansiblecheck/ansiblecheck:"${distribution,,}"-"${distribution_version}" "${init}" > "${container_id}"'
 
   # Ansible syntax check.
   - 'docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --syntax-check'
 
   # Test role.
-  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${icu_version}"'
+  - 'docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${version}"'
 
   # Test role idempotence.
   - idempotence=$(mktemp)
-  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${icu_version}" | tee -a ${idempotence}
+  - docker exec "$(cat ${container_id})" ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml --extra-vars "icu_version=${version}" | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
