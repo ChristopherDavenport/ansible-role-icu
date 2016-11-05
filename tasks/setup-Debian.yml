@@ -3,6 +3,7 @@
   apt:
     update_cache: yes
     cache_valid_time: 600
+  changed_when: False
 
 - name: Make Sure All Required Packages Are Present
   apt:
