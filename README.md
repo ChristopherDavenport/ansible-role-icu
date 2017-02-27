@@ -30,9 +30,6 @@ These are gcc, g++, gmake/make, and tar in whatever form they take on your distr
 
 ## Role Variables
 
-Available variables are listed below, along with default values
-(see ```defaults/main.yml```):
-
 The version of ICU you would like to install. Supports 49-58 currently. Most
 current is default.
 
@@ -99,7 +96,6 @@ recompilation set this variable to yes and it will recompile every time.
 ```
 icu_recompile: False
 ```
-
 
 ## Dependencies
 
